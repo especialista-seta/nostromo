@@ -33,6 +33,22 @@ def main():
     )
     print(f"Created: {ico_path}")
     
+    # Create Windows Installer wizard images (BMP format)
+    # WizardImageFile: 164x314 pixels (left side banner)
+    wizard_img = img.resize((164, 164), Image.Resampling.LANCZOS)
+    # Create a 164x314 image with the icon centered vertically
+    wizard_banner = Image.new("RGB", (164, 314), (0, 32, 0))  # Dark green background
+    wizard_banner.paste(wizard_img.convert("RGB"), (0, 75))
+    wizard_path = windows_dir / "wizard.bmp"
+    wizard_banner.save(wizard_path, format="BMP")
+    print(f"Created: {wizard_path}")
+    
+    # WizardSmallImageFile: 55x55 pixels (top right corner)
+    wizard_small = img.resize((55, 55), Image.Resampling.LANCZOS)
+    wizard_small_path = windows_dir / "wizard-small.bmp"
+    wizard_small.convert("RGB").save(wizard_small_path, format="BMP")
+    print(f"Created: {wizard_small_path}")
+    
     # Create PNG versions
     png_dir = build_dir / "icons" / "png"
     png_dir.mkdir(parents=True, exist_ok=True)
