@@ -35,29 +35,20 @@ jobs:
       - name: Build nostromo-core
         run: |
           cd packages/nostromo-core
-          uv build
-          ls -la dist/
+          uv build --out-dir ../../dist
       
       - name: Build nostromo-cli
         run: |
           cd packages/nostromo-cli
-          uv build
-          ls -la dist/
+          uv build --out-dir ../../dist
       
       - name: Build nostromo-api
         run: |
           cd packages/nostromo-api
-          uv build
-          ls -la dist/
+          uv build --out-dir ../../dist
       
-      - name: Collect all distributions
-        run: |
-          mkdir -p dist
-          cp packages/nostromo-core/dist/* dist/
-          cp packages/nostromo-cli/dist/* dist/
-          cp packages/nostromo-api/dist/* dist/
-          echo "=== All packages ==="
-          ls -la dist/
+      - name: List all distributions
+        run: ls -la dist/
       
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
