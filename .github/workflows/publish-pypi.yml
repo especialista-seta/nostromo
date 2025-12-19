@@ -29,38 +29,41 @@ jobs:
       - name: Set up Python
         run: uv python install 3.11
       
+      - name: Install dependencies
+        run: uv sync --all-extras
+      
       - name: Build nostromo-core
         run: |
           cd packages/nostromo-core
           uv build
+          ls -la dist/
       
       - name: Build nostromo-cli
         run: |
           cd packages/nostromo-cli
           uv build
+          ls -la dist/
       
       - name: Build nostromo-api
         run: |
           cd packages/nostromo-api
           uv build
+          ls -la dist/
       
-      - name: Upload core artifacts
+      - name: Collect all distributions
+        run: |
+          mkdir -p dist
+          cp packages/nostromo-core/dist/* dist/
+          cp packages/nostromo-cli/dist/* dist/
+          cp packages/nostromo-api/dist/* dist/
+          echo "=== All packages ==="
+          ls -la dist/
+      
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: dist-core
-          path: packages/nostromo-core/dist/*
-      
-      - name: Upload cli artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist-cli
-          path: packages/nostromo-cli/dist/*
-      
-      - name: Upload api artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist-api
-          path: packages/nostromo-api/dist/*
+          name: dist
+          path: dist/*
 
   publish-test-pypi:
     name: Publish to Test PyPI
@@ -72,27 +75,27 @@ jobs:
       name: test-pypi
       url: https://test.pypi.org/project/nostromo-cli/
     
-    permissions:
-      id-token: write
-    
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: dist-*
-          merge-multiple: true
+          name: dist
           path: dist/
+      
+      - name: List distributions
+        run: ls -la dist/
       
       - name: Publish to Test PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
 
   publish-pypi:
     name: Publish to PyPI
     needs: build
     runs-on: ubuntu-latest
-    if: github.event_name == 'release' || github.event_name == 'workflow_call' || github.event.inputs.test_pypi == 'false'
+    if: github.event_name == 'release' || github.event_name == 'workflow_call' || (github.event_name == 'workflow_dispatch' && github.event.inputs.test_pypi == 'false')
     
     environment:
       name: pypi
@@ -102,9 +105,11 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: dist-*
-          merge-multiple: true
+          name: dist
           path: dist/
+      
+      - name: List distributions
+        run: ls -la dist/
       
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
