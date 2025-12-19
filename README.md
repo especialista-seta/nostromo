@@ -32,10 +32,10 @@ A retro-styled CLI chatbot inspired by the MU-TH-UR 6000 computer from the Alien
 
 | Platform | Command |
 |----------|---------|
-| **Windows (Installer)** | Download from [Releases](https://github.com/yourusername/nostromo/releases) |
+| **Windows (Installer)** | Download from [Releases](https://github.com/especialista-seta/nostromo/releases) |
 | **Windows (Scoop)** | `scoop install nostromo` |
-| **macOS (Homebrew)** | `brew install yourusername/tap/nostromo` |
-| **Linux (Homebrew)** | `brew install yourusername/tap/nostromo` |
+| **macOS (Homebrew)** | `brew install especialista-seta/tap/nostromo` |
+| **Linux (Homebrew)** | `brew install especialista-seta/tap/nostromo` |
 | **Arch Linux (AUR)** | `yay -S nostromo` |
 | **Python (pipx)** | `pipx install "nostromo-cli[anthropic]"` |
 | **Python (pip)** | `pip install "nostromo-cli[anthropic]"` |
@@ -89,7 +89,7 @@ This monorepo contains three packages:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/nostromo.git
+git clone https://github.com/especialista-seta/nostromo.git
 cd nostromo
 
 # Install UV

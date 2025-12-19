@@ -4,7 +4,7 @@ pkgver=0.1.0
 pkgrel=1
 pkgdesc="MU-TH-UR 6000 AI Interface - An Aliens-themed CLI chatbot"
 arch=('x86_64')
-url="https://github.com/yourusername/nostromo"
+url="https://github.com/especialista-seta/nostromo"
 license=('MIT')
 depends=('python>=3.11' 'python-pip')
 makedepends=('python-build' 'python-installer' 'python-wheel')

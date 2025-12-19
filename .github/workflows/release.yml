@@ -46,11 +46,11 @@ jobs:
           - Or download `nostromo-windows-x64.zip` for portable use
           
           **macOS:**
-          - `brew install yourusername/tap/nostromo`
+          - `brew install especialista-seta/tap/nostromo`
           - Or download `nostromo-macos-x64.tar.gz`
           
           **Linux:**
-          - `brew install yourusername/tap/nostromo`
+          - `brew install especialista-seta/tap/nostromo`
           - Or download `nostromo-linux-x64.tar.gz`
           
           **Python:**

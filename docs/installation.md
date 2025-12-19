@@ -18,7 +18,7 @@ Choose the installation method that best fits your needs:
 
 Download and run the installer:
 
-1. Go to [GitHub Releases](https://github.com/yourusername/nostromo/releases/latest)
+1. Go to [GitHub Releases](https://github.com/especialista-seta/nostromo/releases/latest)
 2. Download `nostromo-X.X.X-windows-setup.exe`
 3. Run the installer
 4. Choose installation options:
@@ -36,7 +36,7 @@ nostromo configure
 
 ```powershell
 # Add the bucket (first time only)
-scoop bucket add nostromo https://github.com/yourusername/scoop-nostromo
+scoop bucket add nostromo https://github.com/especialista-seta/scoop-nostromo
 
 # Install
 scoop install nostromo
@@ -47,7 +47,7 @@ nostromo configure
 
 ### Option 3: Standalone Executable
 
-1. Download `nostromo-windows-x64.zip` from [Releases](https://github.com/yourusername/nostromo/releases)
+1. Download `nostromo-windows-x64.zip` from [Releases](https://github.com/especialista-seta/nostromo/releases)
 2. Extract to a folder (e.g., `C:\Program Files\nostromo`)
 3. Add the folder to your PATH (optional)
 4. Run `nostromo.exe`
@@ -60,7 +60,7 @@ nostromo configure
 
 ```bash
 # Install
-brew install yourusername/tap/nostromo
+brew install especialista-seta/tap/nostromo
 
 # Configure
 nostromo configure
@@ -70,7 +70,7 @@ nostromo configure
 
 ```bash
 # Download
-curl -LO https://github.com/yourusername/nostromo/releases/latest/download/nostromo-macos-x64.tar.gz
+curl -LO https://github.com/especialista-seta/nostromo/releases/latest/download/nostromo-macos-x64.tar.gz
 
 # Extract
 tar -xzf nostromo-macos-x64.tar.gz
@@ -93,7 +93,7 @@ nostromo configure
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # Install nostromo
-brew install yourusername/tap/nostromo
+brew install especialista-seta/tap/nostromo
 ```
 
 ### Option 2: AUR (Arch Linux)
@@ -110,7 +110,7 @@ paru -S nostromo
 
 ```bash
 # Download
-curl -LO https://github.com/yourusername/nostromo/releases/latest/download/nostromo-linux-x64.tar.gz
+curl -LO https://github.com/especialista-seta/nostromo/releases/latest/download/nostromo-linux-x64.tar.gz
 
 # Extract
 tar -xzf nostromo-linux-x64.tar.gz
@@ -218,7 +218,7 @@ For contributing or development:
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/nostromo.git
+git clone https://github.com/especialista-seta/nostromo.git
 cd nostromo
 
 # Create virtual environment with UV

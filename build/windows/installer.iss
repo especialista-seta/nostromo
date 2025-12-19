@@ -6,7 +6,7 @@
 #define MyAppName "NOSTROMO"
 #define MyAppVersion "0.1.0"
 #define MyAppPublisher "NOSTROMO Project"
-#define MyAppURL "https://github.com/yourusername/nostromo"
+#define MyAppURL "https://github.com/especialista-seta/nostromo"
 #define MyAppExeName "nostromo.exe"
 #define MyAppDescription "MU-TH-UR 6000 AI Interface"
 

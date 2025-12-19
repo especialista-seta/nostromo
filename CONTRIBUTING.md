@@ -14,7 +14,7 @@ Thank you for your interest in contributing to NOSTROMO! This document provides 
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/nostromo.git
+git clone https://github.com/especialista-seta/nostromo.git
 cd nostromo
 
 # Install dependencies

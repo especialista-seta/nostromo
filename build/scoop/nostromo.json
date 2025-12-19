@@ -1,22 +1,22 @@
 {
     "version": "0.1.0",
     "description": "MU-TH-UR 6000 AI Interface - An Aliens-themed CLI chatbot",
-    "homepage": "https://github.com/yourusername/nostromo",
+    "homepage": "https://github.com/especialista-seta/nostromo",
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/yourusername/nostromo/releases/download/v0.1.0/nostromo-windows-x64.zip",
+            "url": "https://github.com/especialista-seta/nostromo/releases/download/v0.1.0/nostromo-windows-x64.zip",
             "hash": "TODO_UPDATE_HASH_ON_RELEASE"
         }
     },
     "bin": "nostromo\\nostromo.exe",
     "checkver": {
-        "github": "https://github.com/yourusername/nostromo"
+        "github": "https://github.com/especialista-seta/nostromo"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/yourusername/nostromo/releases/download/v$version/nostromo-windows-x64.zip"
+                "url": "https://github.com/especialista-seta/nostromo/releases/download/v$version/nostromo-windows-x64.zip"
             }
         }
     },
