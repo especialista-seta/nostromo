@@ -31,6 +31,57 @@ if is_windows:
 elif is_macos:
     icon_path = str(PROJECT_ROOT / 'build' / 'macos' / 'nostromo.icns')
 
+# Build hiddenimports list, filtering None values
+hiddenimports_list = [
+    # Core dependencies
+    'nostromo_core',
+    'nostromo_core.engine',
+    'nostromo_core.models',
+    'nostromo_core.adapters.anthropic',
+    'nostromo_core.adapters.openai',
+    'nostromo_core.adapters.memory',
+    'nostromo_core.theme.constants',
+    'nostromo_core.theme.errors',
+    'nostromo_core.theme.prompts',
+    # CLI dependencies
+    'nostromo_cli',
+    'nostromo_cli.app',
+    'nostromo_cli.cli',
+    'nostromo_cli.config',
+    'nostromo_cli.history',
+    'nostromo_cli.secrets',
+    # Third-party
+    'textual',
+    'textual.app',
+    'textual.widgets',
+    'textual.containers',
+    'textual.css',
+    'rich',
+    'rich.console',
+    'rich.panel',
+    'rich.text',
+    'typer',
+    'click',
+    'pydantic',
+    'pydantic_settings',
+    'keyring',
+    'keyring.backends',
+    'cryptography',
+    'cryptography.fernet',
+    'anthropic',
+    'openai',
+    'httpx',
+    'tomli',
+]
+
+# Add platform-specific keyring backends
+if is_windows:
+    hiddenimports_list.extend(['keyring.backends.Windows', 'win32cred', 'win32ctypes', 'win32ctypes.core'])
+elif is_macos:
+    hiddenimports_list.append('keyring.backends.macOS')
+elif is_linux:
+    hiddenimports_list.extend(['keyring.backends.SecretService', 'secretstorage'])
+
 a = Analysis(
     [str(PROJECT_ROOT / 'packages' / 'nostromo-cli' / 'nostromo_cli' / '__main__.py')],
     pathex=[
@@ -42,51 +93,7 @@ a = Analysis(
         # Include CSS styles
         (str(PROJECT_ROOT / 'packages' / 'nostromo-cli' / 'nostromo_cli' / 'styles'), 'nostromo_cli/styles'),
     ],
-    hiddenimports=[
-        # Core dependencies
-        'nostromo_core',
-        'nostromo_core.engine',
-        'nostromo_core.models',
-        'nostromo_core.adapters.anthropic',
-        'nostromo_core.adapters.openai',
-        'nostromo_core.adapters.memory',
-        'nostromo_core.theme.constants',
-        'nostromo_core.theme.errors',
-        'nostromo_core.theme.prompts',
-        # CLI dependencies
-        'nostromo_cli',
-        'nostromo_cli.app',
-        'nostromo_cli.cli',
-        'nostromo_cli.config',
-        'nostromo_cli.history',
-        'nostromo_cli.secrets',
-        # Third-party
-        'textual',
-        'textual.app',
-        'textual.widgets',
-        'textual.containers',
-        'textual.css',
-        'rich',
-        'rich.console',
-        'rich.panel',
-        'rich.text',
-        'typer',
-        'click',
-        'pydantic',
-        'pydantic_settings',
-        'keyring',
-        'keyring.backends',
-        'cryptography',
-        'cryptography.fernet',
-        'anthropic',
-        'openai',
-        'httpx',
-        'tomli',
-        # Keyring backends (platform-specific)
-        'keyring.backends.Windows' if is_windows else None,
-        'keyring.backends.macOS' if is_macos else None,
-        'keyring.backends.SecretService' if is_linux else None,
-    ],
+    hiddenimports=hiddenimports_list,
     hookspath=[str(SPEC_ROOT / 'hooks')],
     hooksconfig={},
     runtime_hooks=[],
@@ -114,9 +121,6 @@ a = Analysis(
     cipher=block_cipher,
     noarchive=False,
 )
-
-# Filter out None values from hiddenimports
-a.hiddenimports = [h for h in a.hiddenimports if h is not None]
 
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
