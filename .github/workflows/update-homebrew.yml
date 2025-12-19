@@ -100,45 +100,45 @@ jobs:
 
             desc "MU-TH-UR 6000 AI Interface - An Aliens-themed CLI chatbot"
             homepage "https://github.com/especialista-seta/nostromo"
-            url "https://files.pythonhosted.org/packages/source/n/nostromo-cli/nostromo_cli-VERSION.tar.gz"
-            sha256 "CLI_HASH"
+            url "https://files.pythonhosted.org/packages/source/n/nostromo-cli/nostromo_cli-__NOSTROMO_VERSION__.tar.gz"
+            sha256 "__CLI_HASH__"
             license "MIT"
 
             depends_on "python@3.11"
 
             resource "nostromo-core" do
-              url "https://files.pythonhosted.org/packages/source/n/nostromo-core/nostromo_core-VERSION.tar.gz"
-              sha256 "CORE_HASH"
+              url "https://files.pythonhosted.org/packages/source/n/nostromo-core/nostromo_core-__NOSTROMO_VERSION__.tar.gz"
+              sha256 "__CORE_HASH__"
             end
 
             resource "textual" do
-              url "https://files.pythonhosted.org/packages/source/t/textual/textual-TEXTUAL_VERSION.tar.gz"
-              sha256 "TEXTUAL_HASH"
+              url "https://files.pythonhosted.org/packages/source/t/textual/textual-__TEXTUAL_VERSION__.tar.gz"
+              sha256 "__TEXTUAL_HASH__"
             end
 
             resource "rich" do
-              url "https://files.pythonhosted.org/packages/source/r/rich/rich-RICH_VERSION.tar.gz"
-              sha256 "RICH_HASH"
+              url "https://files.pythonhosted.org/packages/source/r/rich/rich-__RICH_VERSION__.tar.gz"
+              sha256 "__RICH_HASH__"
             end
 
             resource "click" do
-              url "https://files.pythonhosted.org/packages/source/c/click/click-CLICK_VERSION.tar.gz"
-              sha256 "CLICK_HASH"
+              url "https://files.pythonhosted.org/packages/source/c/click/click-__CLICK_VERSION__.tar.gz"
+              sha256 "__CLICK_HASH__"
             end
 
             resource "pydantic" do
-              url "https://files.pythonhosted.org/packages/source/p/pydantic/pydantic-PYDANTIC_VERSION.tar.gz"
-              sha256 "PYDANTIC_HASH"
+              url "https://files.pythonhosted.org/packages/source/p/pydantic/pydantic-__PYDANTIC_VERSION__.tar.gz"
+              sha256 "__PYDANTIC_HASH__"
             end
 
             resource "httpx" do
-              url "https://files.pythonhosted.org/packages/source/h/httpx/httpx-HTTPX_VERSION.tar.gz"
-              sha256 "HTTPX_HASH"
+              url "https://files.pythonhosted.org/packages/source/h/httpx/httpx-__HTTPX_VERSION__.tar.gz"
+              sha256 "__HTTPX_HASH__"
             end
 
             resource "keyring" do
-              url "https://files.pythonhosted.org/packages/source/k/keyring/keyring-KEYRING_VERSION.tar.gz"
-              sha256 "KEYRING_HASH"
+              url "https://files.pythonhosted.org/packages/source/k/keyring/keyring-__KEYRING_VERSION__.tar.gz"
+              sha256 "__KEYRING_HASH__"
             end
 
             def install
@@ -173,22 +173,22 @@ jobs:
           end
           FORMULA_EOF
           
-          # Replace placeholders
-          sed -i "s/VERSION/$VERSION/g" Formula/nostromo.rb
-          sed -i "s/CLI_HASH/${{ steps.hashes.outputs.cli_hash }}/g" Formula/nostromo.rb
-          sed -i "s/CORE_HASH/${{ steps.hashes.outputs.core_hash }}/g" Formula/nostromo.rb
-          sed -i "s/TEXTUAL_VERSION/${{ steps.hashes.outputs.textual_version }}/g" Formula/nostromo.rb
-          sed -i "s/TEXTUAL_HASH/${{ steps.hashes.outputs.textual_hash }}/g" Formula/nostromo.rb
-          sed -i "s/RICH_VERSION/${{ steps.hashes.outputs.rich_version }}/g" Formula/nostromo.rb
-          sed -i "s/RICH_HASH/${{ steps.hashes.outputs.rich_hash }}/g" Formula/nostromo.rb
-          sed -i "s/CLICK_VERSION/${{ steps.hashes.outputs.click_version }}/g" Formula/nostromo.rb
-          sed -i "s/CLICK_HASH/${{ steps.hashes.outputs.click_hash }}/g" Formula/nostromo.rb
-          sed -i "s/PYDANTIC_VERSION/${{ steps.hashes.outputs.pydantic_version }}/g" Formula/nostromo.rb
-          sed -i "s/PYDANTIC_HASH/${{ steps.hashes.outputs.pydantic_hash }}/g" Formula/nostromo.rb
-          sed -i "s/HTTPX_VERSION/${{ steps.hashes.outputs.httpx_version }}/g" Formula/nostromo.rb
-          sed -i "s/HTTPX_HASH/${{ steps.hashes.outputs.httpx_hash }}/g" Formula/nostromo.rb
-          sed -i "s/KEYRING_VERSION/${{ steps.hashes.outputs.keyring_version }}/g" Formula/nostromo.rb
-          sed -i "s/KEYRING_HASH/${{ steps.hashes.outputs.keyring_hash }}/g" Formula/nostromo.rb
+          # Replace placeholders with unique delimiters to avoid substring matching
+          sed -i "s/__NOSTROMO_VERSION__/$VERSION/g" Formula/nostromo.rb
+          sed -i "s/__CLI_HASH__/${{ steps.hashes.outputs.cli_hash }}/g" Formula/nostromo.rb
+          sed -i "s/__CORE_HASH__/${{ steps.hashes.outputs.core_hash }}/g" Formula/nostromo.rb
+          sed -i "s/__TEXTUAL_VERSION__/${{ steps.hashes.outputs.textual_version }}/g" Formula/nostromo.rb
+          sed -i "s/__TEXTUAL_HASH__/${{ steps.hashes.outputs.textual_hash }}/g" Formula/nostromo.rb
+          sed -i "s/__RICH_VERSION__/${{ steps.hashes.outputs.rich_version }}/g" Formula/nostromo.rb
+          sed -i "s/__RICH_HASH__/${{ steps.hashes.outputs.rich_hash }}/g" Formula/nostromo.rb
+          sed -i "s/__CLICK_VERSION__/${{ steps.hashes.outputs.click_version }}/g" Formula/nostromo.rb
+          sed -i "s/__CLICK_HASH__/${{ steps.hashes.outputs.click_hash }}/g" Formula/nostromo.rb
+          sed -i "s/__PYDANTIC_VERSION__/${{ steps.hashes.outputs.pydantic_version }}/g" Formula/nostromo.rb
+          sed -i "s/__PYDANTIC_HASH__/${{ steps.hashes.outputs.pydantic_hash }}/g" Formula/nostromo.rb
+          sed -i "s/__HTTPX_VERSION__/${{ steps.hashes.outputs.httpx_version }}/g" Formula/nostromo.rb
+          sed -i "s/__HTTPX_HASH__/${{ steps.hashes.outputs.httpx_hash }}/g" Formula/nostromo.rb
+          sed -i "s/__KEYRING_VERSION__/${{ steps.hashes.outputs.keyring_version }}/g" Formula/nostromo.rb
+          sed -i "s/__KEYRING_HASH__/${{ steps.hashes.outputs.keyring_hash }}/g" Formula/nostromo.rb
           
           echo "Updated formula:"
           cat Formula/nostromo.rb
