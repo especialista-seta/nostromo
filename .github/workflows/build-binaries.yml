@@ -142,6 +142,13 @@ jobs:
           uv sync --all-extras
           uv pip install pyinstaller
       
+      - name: Generate macOS icon
+        run: |
+          if [ -d "build/macos/nostromo.iconset" ]; then
+            iconutil -c icns build/macos/nostromo.iconset -o build/macos/nostromo.icns
+            echo "Generated nostromo.icns"
+          fi
+      
       - name: Build executable
         run: |
           uv run pyinstaller build/pyinstaller/nostromo.spec --noconfirm
