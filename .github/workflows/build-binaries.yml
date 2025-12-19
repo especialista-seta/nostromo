@@ -168,7 +168,7 @@ jobs:
     name: Upload Release Assets
     needs: [build-windows, build-windows-installer, build-linux, build-macos]
     runs-on: ubuntu-latest
-    if: github.event_name == 'release' || github.event_name == 'workflow_call'
+    if: ${{ always() && needs.build-windows.result == 'success' && needs.build-linux.result == 'success' && needs.build-macos.result == 'success' }}
     
     permissions:
       contents: write
