@@ -5,10 +5,20 @@ Choose the installation method that best fits your needs:
 | Method | Best For | Requires Python |
 |--------|----------|-----------------|
 | **Windows Installer** | Non-technical Windows users | ❌ No |
-| **Scoop** | Windows CLI users | ❌ No |
 | **Homebrew** | macOS/Linux CLI users | ❌ No |
 | **PyPI (pip/pipx)** | Python developers | ✅ Yes |
+| **Standalone Binary** | Portable use without install | ❌ No |
 | **From Source** | Contributors | ✅ Yes |
+
+## PyPI Packages
+
+The project is available on PyPI:
+
+| Package | Description | Install |
+|---------|-------------|---------|
+| [nostromo-cli](https://pypi.org/project/nostromo-cli/) | CLI application | `pipx install "nostromo-cli[anthropic]"` |
+| [nostromo-core](https://pypi.org/project/nostromo-core/) | Core library | `pip install nostromo-core` |
+| [nostromo-api](https://pypi.org/project/nostromo-api/) | REST API server | `pip install nostromo-api` |
 
 ---
 
@@ -32,25 +42,26 @@ After installation, open **Command Prompt** or **PowerShell** and run:
 nostromo configure
 ```
 
-### Option 2: Scoop (Windows Package Manager)
-
-```powershell
-# Add the bucket (first time only)
-scoop bucket add nostromo https://github.com/especialista-seta/scoop-nostromo
-
-# Install
-scoop install nostromo
-
-# Configure
-nostromo configure
-```
-
-### Option 3: Standalone Executable
+### Option 2: Standalone Executable
 
 1. Download `nostromo-windows-x64.zip` from [Releases](https://github.com/especialista-seta/nostromo/releases)
 2. Extract to a folder (e.g., `C:\Program Files\nostromo`)
 3. Add the folder to your PATH (optional)
 4. Run `nostromo.exe`
+
+### Option 3: PyPI with pipx
+
+```powershell
+# Install pipx if needed
+pip install pipx
+pipx ensurepath
+
+# Install nostromo
+pipx install "nostromo-cli[anthropic]"
+
+# Configure
+nostromo configure
+```
 
 ---
 
@@ -59,8 +70,11 @@ nostromo configure
 ### Option 1: Homebrew (Recommended)
 
 ```bash
+# Add the tap
+brew tap especialista-seta/nostromo
+
 # Install
-brew install especialista-seta/tap/nostromo
+brew install nostromo
 
 # Configure
 nostromo configure
@@ -86,24 +100,32 @@ nostromo configure
 
 ## Linux Installation
 
-### Option 1: Homebrew
+### Option 1: Homebrew (Recommended)
 
 ```bash
 # Install Homebrew if needed
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-# Install nostromo
-brew install especialista-seta/tap/nostromo
+# Add the tap and install
+brew tap especialista-seta/nostromo
+brew install nostromo
+
+# Configure
+nostromo configure
 ```
 
-### Option 2: AUR (Arch Linux)
+### Option 2: PyPI with pipx (Recommended for Python Users)
 
 ```bash
-# Using yay
-yay -S nostromo
+# Install pipx if needed
+pip install pipx
+pipx ensurepath
 
-# Or using paru
-paru -S nostromo
+# Install nostromo with Anthropic support
+pipx install "nostromo-cli[anthropic]"
+
+# Configure
+nostromo configure
 ```
 
 ### Option 3: Standalone Binary

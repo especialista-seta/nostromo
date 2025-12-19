@@ -33,10 +33,7 @@ A retro-styled CLI chatbot inspired by the MU-TH-UR 6000 computer from the Alien
 | Platform | Command |
 |----------|---------|
 | **Windows (Installer)** | Download from [Releases](https://github.com/especialista-seta/nostromo/releases) |
-| **Windows (Scoop)** | `scoop install nostromo` |
-| **macOS (Homebrew)** | `brew install especialista-seta/tap/nostromo` |
-| **Linux (Homebrew)** | `brew install especialista-seta/tap/nostromo` |
-| **Arch Linux (AUR)** | `yay -S nostromo` |
+| **macOS/Linux (Homebrew)** | `brew tap especialista-seta/nostromo && brew install nostromo` |
 | **Python (pipx)** | `pipx install "nostromo-cli[anthropic]"` |
 | **Python (pip)** | `pip install "nostromo-cli[anthropic]"` |
 

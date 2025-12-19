@@ -32,10 +32,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fernet (AES-256) encryption for vault storage
 - Secure keyring integration with fallback
 
-## [0.1.0] - 2024-XX-XX
+## [0.1.0] - 2025-12-19
 
 ### Added
-- Initial public release
+- MU-TH-UR 6000 themed terminal interface with full-screen TUI
+- Anthropic Claude and OpenAI GPT integration
+- Encrypted API key storage with master password
+- System keychain integration (Windows, macOS, Linux)
+- REST API with FastAPI, SSE streaming, and WebSocket support
+- JWT and API key authentication for API
+- Cross-platform binary builds (Windows, macOS, Linux)
+- Windows installer with desktop shortcuts
+- Homebrew tap for macOS/Linux
+- Published to PyPI: nostromo-core, nostromo-cli, nostromo-api
 
 ---
 
@@ -43,7 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| 0.1.0 | TBD | Initial release |
+| 0.1.0 | 2025-12-19 | Initial release |
 
 ---
 
