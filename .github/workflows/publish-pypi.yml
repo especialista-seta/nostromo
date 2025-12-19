@@ -92,7 +92,7 @@ jobs:
     name: Publish to PyPI
     needs: build
     runs-on: ubuntu-latest
-    if: github.event_name == 'release' || github.event.inputs.test_pypi == 'false'
+    if: github.event_name == 'release' || github.event_name == 'workflow_call' || github.event.inputs.test_pypi == 'false'
     
     environment:
       name: pypi
