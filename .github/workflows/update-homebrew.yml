@@ -1,0 +1,204 @@
+# Update Homebrew formula when a new version is released
+name: Update Homebrew
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to update (e.g., 0.1.0)'
+        required: true
+  release:
+    types: [published]
+
+jobs:
+  update-homebrew:
+    name: Update Homebrew Formula
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Get version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" == "release" ]; then
+            VERSION="${{ github.event.release.tag_name }}"
+            VERSION="${VERSION#v}"  # Remove 'v' prefix
+          else
+            VERSION="${{ github.event.inputs.version }}"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Updating Homebrew formula for version $VERSION"
+      
+      - name: Fetch SHA256 hashes from PyPI
+        id: hashes
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          
+          # Wait for PyPI to be updated (packages may take a moment to appear)
+          sleep 30
+          
+          # Fetch hashes
+          CLI_HASH=$(curl -s "https://pypi.org/pypi/nostromo-cli/${VERSION}/json" | python3 -c "import sys,json; d=json.load(sys.stdin); print([u['digests']['sha256'] for u in d['urls'] if u['filename'].endswith('.tar.gz')][0])")
+          CORE_HASH=$(curl -s "https://pypi.org/pypi/nostromo-core/${VERSION}/json" | python3 -c "import sys,json; d=json.load(sys.stdin); print([u['digests']['sha256'] for u in d['urls'] if u['filename'].endswith('.tar.gz')][0])")
+          
+          # Fetch latest dependency hashes
+          TEXTUAL_VERSION=$(curl -s https://pypi.org/pypi/textual/json | python3 -c "import sys,json; print(json.load(sys.stdin)['info']['version'])")
+          TEXTUAL_HASH=$(curl -s https://pypi.org/pypi/textual/json | python3 -c "import sys,json; d=json.load(sys.stdin); print([u['digests']['sha256'] for u in d['urls'] if u['filename'].endswith('.tar.gz')][0])")
+          
+          RICH_VERSION=$(curl -s https://pypi.org/pypi/rich/json | python3 -c "import sys,json; print(json.load(sys.stdin)['info']['version'])")
+          RICH_HASH=$(curl -s https://pypi.org/pypi/rich/json | python3 -c "import sys,json; d=json.load(sys.stdin); print([u['digests']['sha256'] for u in d['urls'] if u['filename'].endswith('.tar.gz')][0])")
+          
+          PYDANTIC_VERSION=$(curl -s https://pypi.org/pypi/pydantic/json | python3 -c "import sys,json; print(json.load(sys.stdin)['info']['version'])")
+          PYDANTIC_HASH=$(curl -s https://pypi.org/pypi/pydantic/json | python3 -c "import sys,json; d=json.load(sys.stdin); print([u['digests']['sha256'] for u in d['urls'] if u['filename'].endswith('.tar.gz')][0])")
+          
+          KEYRING_VERSION=$(curl -s https://pypi.org/pypi/keyring/json | python3 -c "import sys,json; print(json.load(sys.stdin)['info']['version'])")
+          KEYRING_HASH=$(curl -s https://pypi.org/pypi/keyring/json | python3 -c "import sys,json; d=json.load(sys.stdin); print([u['digests']['sha256'] for u in d['urls'] if u['filename'].endswith('.tar.gz')][0])")
+          
+          HTTPX_VERSION=$(curl -s https://pypi.org/pypi/httpx/json | python3 -c "import sys,json; print(json.load(sys.stdin)['info']['version'])")
+          HTTPX_HASH=$(curl -s https://pypi.org/pypi/httpx/json | python3 -c "import sys,json; d=json.load(sys.stdin); print([u['digests']['sha256'] for u in d['urls'] if u['filename'].endswith('.tar.gz')][0])")
+          
+          CLICK_VERSION=$(curl -s https://pypi.org/pypi/click/json | python3 -c "import sys,json; print(json.load(sys.stdin)['info']['version'])")
+          CLICK_HASH=$(curl -s https://pypi.org/pypi/click/json | python3 -c "import sys,json; d=json.load(sys.stdin); print([u['digests']['sha256'] for u in d['urls'] if u['filename'].endswith('.tar.gz')][0])")
+          
+          # Export all
+          echo "cli_hash=$CLI_HASH" >> $GITHUB_OUTPUT
+          echo "core_hash=$CORE_HASH" >> $GITHUB_OUTPUT
+          echo "textual_version=$TEXTUAL_VERSION" >> $GITHUB_OUTPUT
+          echo "textual_hash=$TEXTUAL_HASH" >> $GITHUB_OUTPUT
+          echo "rich_version=$RICH_VERSION" >> $GITHUB_OUTPUT
+          echo "rich_hash=$RICH_HASH" >> $GITHUB_OUTPUT
+          echo "pydantic_version=$PYDANTIC_VERSION" >> $GITHUB_OUTPUT
+          echo "pydantic_hash=$PYDANTIC_HASH" >> $GITHUB_OUTPUT
+          echo "keyring_version=$KEYRING_VERSION" >> $GITHUB_OUTPUT
+          echo "keyring_hash=$KEYRING_HASH" >> $GITHUB_OUTPUT
+          echo "httpx_version=$HTTPX_VERSION" >> $GITHUB_OUTPUT
+          echo "httpx_hash=$HTTPX_HASH" >> $GITHUB_OUTPUT
+          echo "click_version=$CLICK_VERSION" >> $GITHUB_OUTPUT
+          echo "click_hash=$CLICK_HASH" >> $GITHUB_OUTPUT
+          
+          echo "Fetched hashes:"
+          echo "  nostromo-cli: $CLI_HASH"
+          echo "  nostromo-core: $CORE_HASH"
+      
+      - name: Checkout Homebrew tap
+        uses: actions/checkout@v4
+        with:
+          repository: especialista-seta/homebrew-nostromo
+          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          path: homebrew-tap
+      
+      - name: Update formula
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          cd homebrew-tap
+          
+          cat > Formula/nostromo.rb << 'FORMULA_EOF'
+          # typed: false
+          # frozen_string_literal: true
+
+          class Nostromo < Formula
+            include Language::Python::Virtualenv
+
+            desc "MU-TH-UR 6000 AI Interface - An Aliens-themed CLI chatbot"
+            homepage "https://github.com/especialista-seta/nostromo"
+            url "https://files.pythonhosted.org/packages/source/n/nostromo-cli/nostromo_cli-VERSION.tar.gz"
+            sha256 "CLI_HASH"
+            license "MIT"
+
+            depends_on "python@3.11"
+
+            resource "nostromo-core" do
+              url "https://files.pythonhosted.org/packages/source/n/nostromo-core/nostromo_core-VERSION.tar.gz"
+              sha256 "CORE_HASH"
+            end
+
+            resource "textual" do
+              url "https://files.pythonhosted.org/packages/source/t/textual/textual-TEXTUAL_VERSION.tar.gz"
+              sha256 "TEXTUAL_HASH"
+            end
+
+            resource "rich" do
+              url "https://files.pythonhosted.org/packages/source/r/rich/rich-RICH_VERSION.tar.gz"
+              sha256 "RICH_HASH"
+            end
+
+            resource "click" do
+              url "https://files.pythonhosted.org/packages/source/c/click/click-CLICK_VERSION.tar.gz"
+              sha256 "CLICK_HASH"
+            end
+
+            resource "pydantic" do
+              url "https://files.pythonhosted.org/packages/source/p/pydantic/pydantic-PYDANTIC_VERSION.tar.gz"
+              sha256 "PYDANTIC_HASH"
+            end
+
+            resource "httpx" do
+              url "https://files.pythonhosted.org/packages/source/h/httpx/httpx-HTTPX_VERSION.tar.gz"
+              sha256 "HTTPX_HASH"
+            end
+
+            resource "keyring" do
+              url "https://files.pythonhosted.org/packages/source/k/keyring/keyring-KEYRING_VERSION.tar.gz"
+              sha256 "KEYRING_HASH"
+            end
+
+            def install
+              virtualenv_install_with_resources
+            end
+
+            def post_install
+              ohai "NOSTROMO installed successfully!"
+              ohai "Run 'nostromo configure' to set up your API keys"
+            end
+
+            def caveats
+              <<~EOS
+                ╔══════════════════════════════════════════════════════════════╗
+                ║  MU-TH-UR 6000 ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ USCSS NOSTROMO ║
+                ╚══════════════════════════════════════════════════════════════╝
+
+                First-time setup:
+                  nostromo configure
+
+                Launch the interface:
+                  nostromo
+
+                For more information:
+                  nostromo --help
+              EOS
+            end
+
+            test do
+              system "#{bin}/nostromo", "--help"
+            end
+          end
+          FORMULA_EOF
+          
+          # Replace placeholders
+          sed -i "s/VERSION/$VERSION/g" Formula/nostromo.rb
+          sed -i "s/CLI_HASH/${{ steps.hashes.outputs.cli_hash }}/g" Formula/nostromo.rb
+          sed -i "s/CORE_HASH/${{ steps.hashes.outputs.core_hash }}/g" Formula/nostromo.rb
+          sed -i "s/TEXTUAL_VERSION/${{ steps.hashes.outputs.textual_version }}/g" Formula/nostromo.rb
+          sed -i "s/TEXTUAL_HASH/${{ steps.hashes.outputs.textual_hash }}/g" Formula/nostromo.rb
+          sed -i "s/RICH_VERSION/${{ steps.hashes.outputs.rich_version }}/g" Formula/nostromo.rb
+          sed -i "s/RICH_HASH/${{ steps.hashes.outputs.rich_hash }}/g" Formula/nostromo.rb
+          sed -i "s/CLICK_VERSION/${{ steps.hashes.outputs.click_version }}/g" Formula/nostromo.rb
+          sed -i "s/CLICK_HASH/${{ steps.hashes.outputs.click_hash }}/g" Formula/nostromo.rb
+          sed -i "s/PYDANTIC_VERSION/${{ steps.hashes.outputs.pydantic_version }}/g" Formula/nostromo.rb
+          sed -i "s/PYDANTIC_HASH/${{ steps.hashes.outputs.pydantic_hash }}/g" Formula/nostromo.rb
+          sed -i "s/HTTPX_VERSION/${{ steps.hashes.outputs.httpx_version }}/g" Formula/nostromo.rb
+          sed -i "s/HTTPX_HASH/${{ steps.hashes.outputs.httpx_hash }}/g" Formula/nostromo.rb
+          sed -i "s/KEYRING_VERSION/${{ steps.hashes.outputs.keyring_version }}/g" Formula/nostromo.rb
+          sed -i "s/KEYRING_HASH/${{ steps.hashes.outputs.keyring_hash }}/g" Formula/nostromo.rb
+          
+          echo "Updated formula:"
+          cat Formula/nostromo.rb
+      
+      - name: Commit and push
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          cd homebrew-tap
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/nostromo.rb
+          git commit -m "Update nostromo to v${VERSION}"
+          git push
