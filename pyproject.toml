@@ -1,0 +1,51 @@
+[project]
+name = "nostromo-workspace"
+version = "0.1.0"
+description = "MU-TH-UR 6000 - A retro-styled CLI chatbot inspired by the Aliens film"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+authors = [{ name = "Nostromo Crew" }]
+keywords = ["cli", "chatbot", "tui", "aliens", "llm", "terminal", "mother"]
+
+[tool.uv.workspace]
+members = ["packages/*"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "ruff>=0.8.0",
+    "mypy>=1.8.0",
+    "textual-dev>=1.0.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_ignores = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = [
+    "packages/nostromo-core/tests",
+    "packages/nostromo-cli/tests", 
+    "packages/nostromo-api/tests",
+]
+pythonpath = [
+    "packages/nostromo-core",
+    "packages/nostromo-cli",
+    "packages/nostromo-api",
+]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "--import-mode=importlib"

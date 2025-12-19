@@ -1,0 +1,45 @@
+# Maintainer: Your Name <your.email@example.com>
+pkgname=nostromo
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="MU-TH-UR 6000 AI Interface - An Aliens-themed CLI chatbot"
+arch=('x86_64')
+url="https://github.com/yourusername/nostromo"
+license=('MIT')
+depends=('python>=3.11' 'python-pip')
+makedepends=('python-build' 'python-installer' 'python-wheel')
+optdepends=(
+    'libsecret: for secure credential storage'
+    'gnome-keyring: for GNOME keyring integration'
+    'kwallet: for KDE wallet integration'
+)
+source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+    cd "$srcdir/$pkgname-$pkgver"
+    
+    # Build all packages
+    cd packages/nostromo-core
+    python -m build --wheel --no-isolation
+    cd ../nostromo-cli
+    python -m build --wheel --no-isolation
+}
+
+package() {
+    cd "$srcdir/$pkgname-$pkgver"
+    
+    # Install core
+    python -m installer --destdir="$pkgdir" packages/nostromo-core/dist/*.whl
+    
+    # Install CLI
+    python -m installer --destdir="$pkgdir" packages/nostromo-cli/dist/*.whl
+    
+    # Install desktop file
+    install -Dm644 build/linux/nostromo.desktop "$pkgdir/usr/share/applications/nostromo.desktop"
+    
+    # Install license
+    install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
+
+# vim:set ts=4 sw=4 et:

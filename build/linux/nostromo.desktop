@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=NOSTROMO
+Comment=MU-TH-UR 6000 AI Interface
+GenericName=AI Chatbot
+Exec=nostromo
+Icon=nostromo
+Terminal=true
+Type=Application
+Categories=Utility;ConsoleOnly;
+Keywords=ai;chatbot;llm;terminal;cli;
+StartupNotify=false
